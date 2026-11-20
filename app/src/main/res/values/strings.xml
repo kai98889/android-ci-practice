@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">轻待办</string>
+    <string name="heading">把今天，安排好。</string>
+    <string name="subtitle">专注眼前的小事，一件一件完成。</string>
+    <string name="input_hint">接下来要做什么？</string>
+    <string name="add">添加任务</string>
+    <string name="empty">清单还是空的\n添加一件想完成的小事吧。</string>
+    <string name="progress">已完成 %1$d / %2$d 项</string>
+    <string name="delete_task">删除任务：%1$s</string>
+    <string name="blank_task">先写下任务内容</string>
+    <string name="storage_error">读取本地数据失败，原数据已保留，请重试。</string>
+    <string name="local_only">仅保存在本机 · 无需账号</string>
+</resources>

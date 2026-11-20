@@ -24,7 +24,20 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
       - name: Test, lint and build debug APK
-        run: ./gradlew testDebugUnitTest lintDebug assembleDebug
+        run: |
+          set +e
+          ./gradlew testDebugUnitTest lintDebug assembleDebug 2>&1 | tee "$RUNNER_TEMP/debug-build.log"
+          build_status=${PIPESTATUS[0]}
+          if [ "$build_status" -ne 0 ]; then
+            python3 - <<'PY'
+          import os
+          from pathlib import Path
+          text = '\n'.join(Path(os.environ['RUNNER_TEMP'], 'debug-build.log').read_text().splitlines()[-90:])
+          text = text.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+          print('::error title=Android build details::' + text)
+          PY
+          fi
+          exit "$build_status"
       - name: Verify APK signature
         run: "$ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose app/build/outputs/apk/debug/app-debug.apk"
       - name: Enable KVM for emulator
